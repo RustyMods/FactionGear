@@ -1,0 +1,334 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <Import Project="environment.props" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{4358610B-F3F4-4843-B7AF-98B7BC60DCDE}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>FactionGear</RootNamespace>
+        <AssemblyName>FactionGear</AssemblyName>
+        <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <LangVersion>10</LangVersion>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <Choose>
+        <When Condition="($(OS) == 'Unix' OR $(OS) == 'OSX') AND $(GamePath) == ''">
+            <PropertyGroup>
+                <GamePath Condition="!Exists('$(GamePath)')">$(HOME)/.steam/steam/steamapps/common/Valheim</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)')">$(HOME)/Library/Application Support/Steam/steamapps/common/Valheim/Contents/MacOS</GamePath>
+                <CorlibPath Condition="!Exists('$(CorlibPath)') AND Exists('$(GamePath)')">$(GamePath)\valheim_Data\Managed</CorlibPath>
+                <CorlibPath Condition="!Exists('$(CorlibPath)')">$(GamePath)/unstripped_corelib</CorlibPath>
+            </PropertyGroup>
+        </When>
+        <When Condition="($(OS) == 'Windows_NT') AND $(GamePath) == ''">
+            <PropertyGroup>
+                <GamePath Condition="!Exists('$(GamePath)')">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 892970', 'InstallLocation', null, RegistryView.Registry64, RegistryView.Registry32))</GamePath>
+                <_SteamLibraryPath>$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\SOFTWARE\Valve\Steam', 'SteamPath', null, RegistryView.Registry32))</_SteamLibraryPath>
+                <GamePath Condition="!Exists('$(GamePath)') AND '$(_SteamLibraryPath)' != ''">$(_SteamLibraryPath)\steamapps\common\Valheim</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)') AND Exists('$(ValheimGamePath)')">$(ValheimGamePath)</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)')">C:\Program Files\Steam\steamapps\common\Valheim</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)')">C:\Program Files (x86)\Steam\steamapps\common\Valheim</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)')">D:\SteamLibrary\steamapps\common\Valheim</GamePath>
+                <BepInExPath Condition="!Exists('$(BepInExPath)')AND Exists('$(GamePath)')">$(GamePath)\BepInEx</BepInExPath>
+                <CorlibPath Condition="!Exists('$(CorlibPath)') AND Exists('$(GamePath)')">$(GamePath)\valheim_Data\Managed</CorlibPath>
+                <CorlibPath Condition="!Exists('$(CorlibPath)') AND Exists('$(GamePath)')">$(GamePath)\unstripped_corlib</CorlibPath>
+                <PublicizedAssembliesPath Condition="!Exists('$(PublicizedAssembliesPath)') AND Exists('$(GamePath)')">$(GamePath)\valheim_Data\Managed\publicized_assemblies</PublicizedAssembliesPath>
+                <AfterTargets Condition="'$(AfterTargets)' == ''">ILRepacker</AfterTargets>
+            </PropertyGroup>
+        </When>
+    </Choose>
+    <ItemGroup>
+        <Reference Include="0Harmony">
+            <HintPath>$(BepInExPath)\core\0Harmony.dll</HintPath>
+        </Reference>
+        <Reference Include="assembly_guiutils">
+            <HintPath>$(PublicizedAssembliesPath)\assembly_guiutils_publicized.dll</HintPath>
+        </Reference>
+        <Reference Include="assembly_utils">
+            <HintPath>$(PublicizedAssembliesPath)\assembly_utils_publicized.dll</HintPath>
+        </Reference>
+        <Reference Include="assembly_valheim">
+            <HintPath>$(PublicizedAssembliesPath)\assembly_valheim_publicized.dll</HintPath>
+        </Reference>
+        <Reference Include="BepInEx">
+            <HintPath>$(BepInExPath)\core\BepInEx.dll</HintPath>
+        </Reference>
+        <Reference Include="ServerSync">
+            <HintPath>Libs\ServerSync.dll</HintPath>
+        </Reference>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Xml" />
+        <Reference Include="UnityEngine">
+            <HintPath>$(CorlibPath)\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.AnimationModule">
+          <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.AssetBundleModule">
+            <HintPath>$(CorlibPath)\UnityEngine.AssetBundleModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(CorlibPath)\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.ImageConversionModule">
+          <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.IMGUIModule">
+            <HintPath>$(CorlibPath)\UnityEngine.IMGUIModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.InputLegacyModule">
+            <HintPath>$(CorlibPath)\UnityEngine.InputLegacyModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.ParticleSystemModule">
+            <HintPath>$(CorlibPath)\UnityEngine.ParticleSystemModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+            <HintPath>$(CorlibPath)\UnityEngine.UI.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.TextMeshPro">
+            <HintPath>$(GamePath)\valheim_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Managers\ArmorManager.cs" />
+        <Compile Include="Managers\BannerManager.cs" />
+        <Compile Include="Managers\CapeManager.cs" />
+        <Compile Include="Managers\ItemManager.cs" />
+        <Compile Include="Managers\ShieldManager.cs" />
+        <Compile Include="Managers\TextureManager.cs" />
+        <Compile Include="Managers\Tools.cs" />
+        <Compile Include="Plugin.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="VersionHandshake.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="..\..\..\ashland rip\AshlandRIP\AssetBundles\StandaloneWindows\necroarmor">
+          <Link>assets\necroarmor</Link>
+        </EmbeddedResource>
+        <EmbeddedResource Include="..\..\..\ashland rip\AshlandRIP\AssetBundles\StandaloneWindows\factionarmors">
+          <Link>assets\factionarmors</Link>
+        </EmbeddedResource>
+        <Content Include=".gitignore" />
+        <EmbeddedResource Include="assets\BlackmetalShieldIcons\BlackmetalShieldDragemesters_Icon.png" />
+        <EmbeddedResource Include="assets\BlackmetalShieldIcons\BlackmetalShieldFenrir_Icon.png" />
+        <EmbeddedResource Include="assets\BlackmetalShieldIcons\BlackmetalShieldFreyr_Icon.png" />
+        <EmbeddedResource Include="assets\BlackmetalShieldIcons\BlackmetalShieldHounds_Icon.png" />
+        <EmbeddedResource Include="assets\BlackmetalTowerShieldIcons\BlackmetalTowerShieldDragemesters_Icon.png" />
+        <EmbeddedResource Include="assets\BlackmetalTowerShieldIcons\BlackmetalTowerShieldFenrir_Icon.png" />
+        <EmbeddedResource Include="assets\BlackmetalTowerShieldIcons\BlackmetalTowerShieldFreyr_Icon.png" />
+        <EmbeddedResource Include="assets\BlackmetalTowerShieldIcons\BlackmetalTowerShieldHounds_Icon.png" />
+        <EmbeddedResource Include="assets\CapeAsh\Drage_Ash.png" />
+        <EmbeddedResource Include="assets\CapeAsh\Drage_Ash_Icon.png" />
+        <EmbeddedResource Include="assets\CapeAsh\Fenrir_Ash.png" />
+        <EmbeddedResource Include="assets\CapeAsh\Fenrir_Ash_Icon.png" />
+        <EmbeddedResource Include="assets\CapeAsh\Freyr_Ash.png" />
+        <EmbeddedResource Include="assets\CapeAsh\Freyr_Ash_Icon.png" />
+        <EmbeddedResource Include="assets\CapeAsh\Hounds_Ash.png" />
+        <EmbeddedResource Include="assets\CapeAsh\Hounds_Ash_Icon.png" />
+        <EmbeddedResource Include="assets\CapeDeer\CapeDeerHideDragemesters.png" />
+        <EmbeddedResource Include="assets\CapeDeer\CapeDeerHideFenrir.png" />
+        <EmbeddedResource Include="assets\CapeDeer\CapeDeerHideFreyr.png" />
+        <EmbeddedResource Include="assets\CapeDeer\CapeDeerHideHounds.png" />
+        <EmbeddedResource Include="assets\CapeFeather\CapeFeatherFenrir.png" />
+        <EmbeddedResource Include="assets\CapeFeather\CapeFeathersDragemesters_Icon.png" />
+        <EmbeddedResource Include="assets\CapeFeather\CapeFeathersFenrir_Icon.png" />
+        <EmbeddedResource Include="assets\CapeFeather\CapeFeathersFreyr_Icon.png" />
+        <EmbeddedResource Include="assets\CapeFeather\CapeFeathersHounds_Icon.png" />
+        <EmbeddedResource Include="assets\CapeLox\CapeLoxDragemesters.png" />
+        <EmbeddedResource Include="assets\CapeLox\CapeLoxDragemesters_Icon.png" />
+        <EmbeddedResource Include="assets\CapeLox\CapeLoxFenrir.png" />
+        <EmbeddedResource Include="assets\CapeLox\CapeLoxFenrir_Icon.png" />
+        <EmbeddedResource Include="assets\CapeLox\CapeLoxFreyr.png" />
+        <EmbeddedResource Include="assets\CapeLox\CapeLoxFreyr_Icon.png" />
+        <EmbeddedResource Include="assets\CapeLox\CapeLoxHounds.png" />
+        <EmbeddedResource Include="assets\CapeLox\CapeLoxHounds_Icon.png" />
+        <EmbeddedResource Include="assets\FlametalShieldIcons\FlametalShieldDragemesters_Icon.png" />
+        <EmbeddedResource Include="assets\FlametalShieldIcons\FlametalShieldFenrir_Icon.png" />
+        <EmbeddedResource Include="assets\FlametalShieldIcons\FlametalShieldFreyr_Icon.png" />
+        <EmbeddedResource Include="assets\FlametalShieldIcons\FlametalShieldHounds_Icon.png" />
+        <EmbeddedResource Include="assets\FlametalTowerShieldIcons\FlametalTowerShieldDragemesters_Icon.png" />
+        <EmbeddedResource Include="assets\FlametalTowerShieldIcons\FlametalTowerShieldFenrir_Icon.png" />
+        <EmbeddedResource Include="assets\FlametalTowerShieldIcons\FlametalTowerShieldFreyr_Icon.png" />
+        <EmbeddedResource Include="assets\FlametalTowerShieldIcons\FlametalTowerShieldHounds_Icon.png" />
+        <EmbeddedResource Include="assets\BandedShieldIcons\BandedShieldDragemesters_Icon.png" />
+        <EmbeddedResource Include="assets\BandedShieldIcons\BandedShieldFenrir_Icon.png" />
+        <EmbeddedResource Include="assets\BandedShieldIcons\BandedShieldFreyr_Icon.png" />
+        <EmbeddedResource Include="assets\BandedShieldIcons\BandedShieldHounds_Icon.png" />
+        <EmbeddedResource Include="assets\misc\IronGate_logo.png" />
+        <EmbeddedResource Include="assets\ShieldPaints\ShieldPaint_BlackMetal.png" />
+        <EmbeddedResource Include="assets\ShieldPaints\ShieldPaint_Flametal.png" />
+        <EmbeddedResource Include="assets\AshMage\DrageTex.png" />
+        <EmbeddedResource Include="assets\AshMage\FenrirTex.png" />
+        <EmbeddedResource Include="assets\AshMage\FreyrTex.png" />
+        <EmbeddedResource Include="assets\AshMage\HoundsTex.png" />
+        <EmbeddedResource Include="assets\AshMage\DrageChest_Icon.png" />
+        <EmbeddedResource Include="assets\AshMage\DrageHelmet_Icon.png" />
+        <EmbeddedResource Include="assets\AshMage\DrageLegs_Icon.png" />
+        <EmbeddedResource Include="assets\AshMage\FenrirChest_Icon.png" />
+        <EmbeddedResource Include="assets\AshMage\FenrirHelmet_Icon.png" />
+        <EmbeddedResource Include="assets\AshMage\FenrirLegs_Icon.png" />
+        <EmbeddedResource Include="assets\AshMage\FreyrChest_Icon.png" />
+        <EmbeddedResource Include="assets\AshMage\FreyrHelmet_Icon.png" />
+        <EmbeddedResource Include="assets\AshMage\FreyrLegs_Icon.png" />
+        <EmbeddedResource Include="assets\AshMage\HoundsChest_Icon.png" />
+        <EmbeddedResource Include="assets\AshMage\HoundsHelmet_Icon.png" />
+        <EmbeddedResource Include="assets\AshMage\HoundsLegs_Icon.png" />
+        <EmbeddedResource Include="assets\Banners\BannerDragemesters.png" />
+        <EmbeddedResource Include="assets\Banners\BannerFenrir.png" />
+        <EmbeddedResource Include="assets\Banners\BannerFreyr.png" />
+        <EmbeddedResource Include="assets\Banners\BannerHounds.png" />
+        <EmbeddedResource Include="assets\Banners\BannerServer.png" />
+        <EmbeddedResource Include="assets\Banners\BannerDragemesters_Icon.png" />
+        <EmbeddedResource Include="assets\Banners\BannerFenrir_Icon.png" />
+        <EmbeddedResource Include="assets\Banners\BannerFreyr_Icon.png" />
+        <EmbeddedResource Include="assets\Banners\BannerHounds_Icon.png" />
+        <EmbeddedResource Include="assets\Banners\BannerServer_Icon.png" />
+        <Content Include="environment.props" />
+        <Content Include="ILRepack.targets" />
+        <Content Include="Libs\ServerSync.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="UpdateManifest.ps1" />
+        <EmbeddedResource Include="assets\ShieldPaints\ShieldPaint_WoodBanded.png" />
+        <EmbeddedResource Include="assets\WoodShieldIcons\WoodShieldDragemesters_Icon.png" />
+        <EmbeddedResource Include="assets\WoodShieldIcons\WoodShieldFenrir_Icon.png" />
+        <EmbeddedResource Include="assets\WoodShieldIcons\WoodShieldFreyr_Icon.png" />
+        <EmbeddedResource Include="assets\WoodShieldIcons\WoodShieldHounds_Icon.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="App.config" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
+        <PackageReference Include="YamlDotNet" Version="13.1.0" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+    <UsingTask AssemblyFile="KeyManager.dll" TaskName="KeyManager.Seal" Condition="'$(AfterTargets)' == 'KeyManager'" />
+    <Target Name="KeyManager" AfterTargets="ILRepack" Condition="'$(AfterTargets)' == 'KeyManager'">
+        <Seal DLL="$(TargetPath)" />
+    </Target>
+    <Target Name="GetAssemblyVersion" AfterTargets="$(AfterTargets)">
+        <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+            <Output TaskParameter="Assemblies" ItemName="Targets" />
+        </GetAssemblyIdentity>
+        <ItemGroup>
+            <AssemblyVersions Include="@(Targets->'%(Version)')" />
+        </ItemGroup>
+        <PropertyGroup>
+            <AssemblyVersion>%(AssemblyVersions.Identity)</AssemblyVersion>
+            <Major>$(AssemblyVersion.Split('.')[0])</Major>
+            <Minor>$(AssemblyVersion.Split('.')[1])</Minor>
+            <Patch>$(AssemblyVersion.Split('.')[2])</Patch>
+            <PackageName>$(AssemblyName)_v$(Major).$(Minor).$(Patch)</PackageName>
+            <PackageVersion>$(Major).$(Minor).$(Patch)</PackageVersion>
+            <VersionString>$(Major).$(Minor).$(Patch)</VersionString>
+            <PackageDir>$(ProjectDir)\Thunderstore\$(PackageName)</PackageDir>
+        </PropertyGroup>
+    </Target>
+    <Target Name="CopyOutputDLL" AfterTargets="GetAssemblyVersion">
+        <Error Text="DLL not found in target directory." Condition="!Exists('$(TargetDir)$(AssemblyName).dll')" />
+        <Copy SourceFiles="$(TargetDir)$(AssemblyName).dll" DestinationFolder="$(CopyOutputDLLPath)" OverwriteReadOnlyFiles="true" />
+        <Copy SourceFiles="$(TargetDir)$(AssemblyName).dll" DestinationFolder="$(CopyOutputDLLPath2)" OverwriteReadOnlyFiles="true" Condition="Exists('$(CopyOutputDLLPath2)')" />
+        <Copy SourceFiles="$(TargetDir)$(AssemblyName).dll" DestinationFolder="$(CopyOutputDLLPath3)" OverwriteReadOnlyFiles="true" Condition="Exists('$(CopyOutputDLLPath3)')" />
+    </Target>
+    <Target Name="CopyReadMeToTSFolder" AfterTargets="CopyOutputDLL" Condition=" ('$(Configuration)|$(Platform)' == 'Release|AnyCPU') And ('$(OS)' == 'Windows_NT') ">
+        <Warning Text="README.md not found in project directory. A default README.md file will be created for the Thunderstore package" Condition="!Exists('README.md')" />
+        <WriteLinesToFile File="README.md" Lines="Default Readme file from one of Azumatt's Templates. Replace this with actual content." Overwrite="false" Condition="!Exists('README.md')" />
+        <Copy SourceFiles="README.md" DestinationFolder="$(PackageDir)" OverwriteReadOnlyFiles="true" />
+        <Copy SourceFiles="README.md" DestinationFolder="$(ProjectDir)\Thunderstore" OverwriteReadOnlyFiles="true" />
+    </Target>
+    <UsingTask TaskName="WriteManifestFile" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+        <ParameterGroup>
+            <ManifestFile ParameterType="System.String" Required="true" />
+            <AssemblyName ParameterType="System.String" Required="true" />
+        </ParameterGroup>
+        <Task>
+            <Code Type="Fragment" Language="cs">
+                <![CDATA[
+if (!System.IO.File.Exists(ManifestFile))
+{
+string content = @"{
+  ""name"": """ + AssemblyName + @""",
+  ""version_number"": ""1.0.0"",
+  ""website_url"": ""https://discord.gg/pdHgy6Bsng"",
+  ""description"": ""Your mod description goes here. Do not forget to replace the icon.png file with your own. Must be 256x256. Your Readme.md file will be copied from the one in your project folder."",
+  ""dependencies"": [
+    ""denikson-BepInExPack_Valheim-5.4.2105""
+]
+}";
+System.IO.File.WriteAllText(ManifestFile, content);
+}
+]]>
+
+            </Code>
+        </Task>
+    </UsingTask>
+    <Target Name="UpdateManifestVersion" AfterTargets="CopyReadmeToTSFolder" Condition=" ('$(Configuration)|$(Platform)' == 'Release|AnyCPU') And ('$(OS)' == 'Windows_NT') ">
+        <WriteManifestFile ManifestFile="$(ProjectDir)Thunderstore\manifest.json" AssemblyName="$(AssemblyName)" />
+        <ItemGroup>
+            <ManifestFile Include="$(ProjectDir)Thunderstore\manifest.json" />
+        </ItemGroup>
+        <Message Text="ManifestFile is @(ManifestFile)" />
+        <Message Text="Updating version number in Thunderstore\manifest.json" Condition="Exists(@(ManifestFile))" />
+        <Exec Command="powershell.exe -ExecutionPolicy Bypass -Command &quot;&amp; { &amp; '$(ProjectDir)UpdateManifest.ps1' -manifestFile '@(ManifestFile)' -versionString '$(PackageVersion)' }&quot;" />
+    </Target>
+    <Target Name="MakeThunderstorePackage" AfterTargets="UpdateManifestVersion" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <Error Text="manifest.json not found in Thunderstore directory." Condition="!Exists('$(ProjectDir)\Thunderstore\manifest.json')" />
+        <Error Text="icon.png not found in Thunderstore directory. Please note that Thunderstore requires this image to be 256x256 in dimension" Condition="!Exists('$(ProjectDir)\Thunderstore\icon.png')" />
+        <ItemGroup>
+            <PackageFiles Include="$(TargetDir)$(AssemblyName).dll" Condition="Exists('$(TargetDir)$(AssemblyName).dll')" />
+            <PackageFiles Include="$(ProjectDir)\Thunderstore\CHANGELOG.md" Condition="Exists('$(ProjectDir)\Thunderstore\CHANGELOG.md')" />
+            <PackageFiles Include="$(ProjectDir)\Thunderstore\manifest.json" Condition="Exists('$(ProjectDir)\Thunderstore\manifest.json')" />
+            <PackageFiles Include="$(ProjectDir)\Thunderstore\icon.png" Condition="Exists('$(ProjectDir)\Thunderstore\icon.png')" />
+        </ItemGroup>
+        <MakeDir Directories="$(PackageDir)" />
+        <Copy SourceFiles="@(PackageFiles)" DestinationFolder="$(PackageDir)" />
+        <ZipDirectory SourceDirectory="$(PackageDir)" DestinationFile="Thunderstore\$(PackageName).zip" Overwrite="true" />
+        <RemoveDir Directories="$(PackageDir)" />
+    </Target>
+    <Target Name="MakeNexusPackage" AfterTargets="MakeThunderstorePackage" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <MakeDir Directories="$(ProjectDir)\Nexus" />
+        <ItemGroup>
+            <NexusPackageFiles Include="$(TargetDir)$(AssemblyName).dll;" />
+        </ItemGroup>
+        <MakeDir Directories="$(PackageDir)" />
+        <Copy SourceFiles="@(NexusPackageFiles)" DestinationFolder="$(PackageDir)" />
+        <ZipDirectory SourceDirectory="$(PackageDir)" DestinationFile="Nexus\$(PackageName).zip" Overwrite="true" />
+        <RemoveDir Directories="$(PackageDir)" />
+    </Target>
+
+</Project>
