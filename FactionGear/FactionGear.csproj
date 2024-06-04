@@ -129,9 +129,6 @@
         <Compile Include="VersionHandshake.cs" />
     </ItemGroup>
     <ItemGroup>
-        <EmbeddedResource Include="..\..\..\ashland rip\AshlandRIP\AssetBundles\StandaloneWindows\necroarmor">
-          <Link>assets\necroarmor</Link>
-        </EmbeddedResource>
         <EmbeddedResource Include="..\..\..\ashland rip\AshlandRIP\AssetBundles\StandaloneWindows\factionarmors">
           <Link>assets\factionarmors</Link>
         </EmbeddedResource>
@@ -210,6 +207,7 @@
         <EmbeddedResource Include="assets\Banners\BannerFreyr_Icon.png" />
         <EmbeddedResource Include="assets\Banners\BannerHounds_Icon.png" />
         <EmbeddedResource Include="assets\Banners\BannerServer_Icon.png" />
+        <EmbeddedResource Include="assets\ShieldPaints\ShieldPaint_FlametalTower.png" />
         <Content Include="environment.props" />
         <Content Include="ILRepack.targets" />
         <Content Include="Libs\ServerSync.dll">

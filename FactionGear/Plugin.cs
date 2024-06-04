@@ -16,11 +16,11 @@ namespace FactionGear
     public class FactionGearPlugin : BaseUnityPlugin
     {
         internal const string ModName = "FactionGear";
-        internal const string ModVersion = "1.0.1";
+        internal const string ModVersion = "1.0.3";
         internal const string Author = "ScribeX";
         private const string ModGUID = Author + "." + ModName;
-        private static string ConfigFileName = ModGUID + ".cfg";
-        private static string ConfigFileFullPath = Paths.ConfigPath + Path.DirectorySeparatorChar + ConfigFileName;
+        private static readonly string ConfigFileName = ModGUID + ".cfg";
+        private static readonly string ConfigFileFullPath = Paths.ConfigPath + Path.DirectorySeparatorChar + ConfigFileName;
         internal static string ConnectionError = "";
         private readonly Harmony _harmony = new(ModGUID);
         public static readonly ManualLogSource FactionGearLogger = BepInEx.Logging.Logger.CreateLogSource(ModName);

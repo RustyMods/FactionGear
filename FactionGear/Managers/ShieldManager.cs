@@ -22,7 +22,7 @@ public static class ShieldManager
             SetShieldStyle("ShieldBlackmetal", TextureManager.BlackMetalShieldIcons, TextureManager.ShieldPaint_BlackMetal);
             SetShieldStyle("ShieldBlackmetalTower", TextureManager.BlackMetalTowerShieldIcons, TextureManager.ShieldPaint_BlackMetal);
             SetShieldStyle("ShieldFlametal", TextureManager.FlametalShieldIcons, TextureManager.ShieldPaint_Flametal);
-            SetShieldStyle("ShieldFlametalTower", TextureManager.FlametalTowerShieldIcons, TextureManager.ShieldPaint_Flametal);
+            SetShieldStyle("ShieldFlametalTower", TextureManager.FlametalTowerShieldIcons, TextureManager.ShieldPaint_FlametalTower);
             m_initiated = true;
         }
     }

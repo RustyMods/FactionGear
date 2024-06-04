@@ -12,6 +12,7 @@ public static class TextureManager
     public static readonly Texture2D? ShieldPaint_WoodBanded = RegisterTexture("ShieldPaint_WoodBanded.png", "ShieldPaints");
     public static readonly Texture2D? ShieldPaint_BlackMetal = RegisterTexture("ShieldPaint_BlackMetal.png", "ShieldPaints");
     public static readonly Texture2D? ShieldPaint_Flametal = RegisterTexture("ShieldPaint_Flametal.png", "ShieldPaints");
+    public static readonly Texture2D? ShieldPaint_FlametalTower = RegisterTexture("ShieldPaint_FlametalTower.png", "ShieldPaints");
     
     private static readonly Sprite? IronGate_Icon = RegisterSprite("IronGate_logo.png", "misc");
 

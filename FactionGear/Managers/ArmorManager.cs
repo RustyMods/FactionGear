@@ -109,7 +109,7 @@ public static class ArmorManager
 
     public static void RegisterArmors()
     {
-        Item NecroHelmet = new Item("necroarmor", "HelmetHounds");
+        Item NecroHelmet = new Item("factionarmors", "HelmetHounds");
         NecroHelmet.Name.English("Hounds Helmet");
         NecroHelmet.Description.English("NecroCrownHelmet");
         NecroHelmet.Crafting.Add(Managers.CraftingTable.Forge, 2);
@@ -128,9 +128,16 @@ public static class ArmorManager
             houndsComponent.m_itemData.m_shared.m_weight = 3.0f;
             houndsComponent.m_itemData.m_shared.m_maxDurability = 800f;
             houndsComponent.m_itemData.m_shared.m_armor = 38;
+            houndsComponent.m_itemData.m_shared.m_damageModifiers = new List<HitData.DamageModPair>()
+            {
+                new HitData.DamageModPair()
+                {
+                    m_type = HitData.DamageType.Blunt, m_modifier = HitData.DamageModifier.Resistant
+                }
+            };
         }
         
-        Item NecroCrownHelmet = new Item("necroarmor", "HelmetHoundsKing");
+        Item NecroCrownHelmet = new Item("factionarmors", "HelmetHoundsKing");
         NecroCrownHelmet.Name.English("Hounds King Helmet");
         NecroCrownHelmet.Description.English("");
         NecroCrownHelmet.Crafting.Add(Managers.CraftingTable.Forge, 2);
@@ -149,9 +156,16 @@ public static class ArmorManager
             kingComponent.m_itemData.m_shared.m_weight = 3.0f;
             kingComponent.m_itemData.m_shared.m_maxDurability = 800f;
             kingComponent.m_itemData.m_shared.m_armor = 38;
+            kingComponent.m_itemData.m_shared.m_damageModifiers = new List<HitData.DamageModPair>()
+            {
+                new HitData.DamageModPair()
+                {
+                    m_type = HitData.DamageType.Blunt, m_modifier = HitData.DamageModifier.Resistant
+                }
+            };
         }
 
-        Item NecroChest = new Item("necroarmor", "ArmorHoundsChest");
+        Item NecroChest = new Item("factionarmors", "ArmorHoundsChest");
         NecroChest.Name.English("Hounds Chest");
         NecroChest.Description.English("");
         NecroChest.Crafting.Add(Managers.CraftingTable.Forge, 2);
@@ -171,9 +185,20 @@ public static class ArmorManager
             chestComponent.m_itemData.m_shared.m_weight = 10f;
             chestComponent.m_itemData.m_shared.m_maxDurability = 1000f;
             chestComponent.m_itemData.m_shared.m_armor = 38;
+            chestComponent.m_itemData.m_shared.m_damageModifiers = new List<HitData.DamageModPair>()
+            {
+                new HitData.DamageModPair()
+                {
+                    m_type = HitData.DamageType.Frost, m_modifier = HitData.DamageModifier.Resistant
+                },
+                new HitData.DamageModPair()
+                {
+                    m_type = HitData.DamageType.Frost, m_modifier = HitData.DamageModifier.Resistant
+                }
+            };
         }
         
-        Item NecroLegs = new Item("necroarmor", "ArmorHoundsLegs");
+        Item NecroLegs = new Item("factionarmors", "ArmorHoundsLegs");
         NecroLegs.Name.English("Hounds Legs");
         NecroLegs.Description.English("");
         NecroLegs.Crafting.Add(Managers.CraftingTable.Forge, 2);
@@ -193,6 +218,13 @@ public static class ArmorManager
             legsComponent.m_itemData.m_shared.m_maxDurability = 1000f;
             legsComponent.m_itemData.m_shared.m_weight = 10f;
             legsComponent.m_itemData.m_shared.m_armor = 38;
+            chestComponent.m_itemData.m_shared.m_damageModifiers = new List<HitData.DamageModPair>()
+            {
+                new HitData.DamageModPair()
+                {
+                    m_type = HitData.DamageType.Slash, m_modifier = HitData.DamageModifier.Resistant
+                }
+            };
         }
 
         Dictionary<string, string> helmets = new()
@@ -241,6 +273,13 @@ public static class ArmorManager
                 component.m_itemData.m_shared.m_weight = 3.0f;
                 component.m_itemData.m_shared.m_maxDurability = 800f;
                 component.m_itemData.m_shared.m_armor = 38;
+                component.m_itemData.m_shared.m_damageModifiers = new List<HitData.DamageModPair>()
+                {
+                    new HitData.DamageModPair()
+                    {
+                        m_type = HitData.DamageType.Blunt, m_modifier = HitData.DamageModifier.Resistant
+                    }
+                };
             }
         }
         foreach (var kvp in chests)
@@ -265,6 +304,17 @@ public static class ArmorManager
                 component.m_itemData.m_shared.m_weight = 10f;
                 component.m_itemData.m_shared.m_maxDurability = 1000f;
                 component.m_itemData.m_shared.m_armor = 38;
+                component.m_itemData.m_shared.m_damageModifiers = new List<HitData.DamageModPair>()
+                {
+                    new HitData.DamageModPair()
+                    {
+                        m_type = HitData.DamageType.Fire, m_modifier = HitData.DamageModifier.Resistant
+                    },
+                    new HitData.DamageModPair()
+                    {
+                        m_type = HitData.DamageType.Frost, m_modifier = HitData.DamageModifier.Resistant
+                    }
+                };
             }
         }
         foreach (var kvp in legs)
@@ -289,6 +339,13 @@ public static class ArmorManager
                 component.m_itemData.m_shared.m_maxDurability = 1000f;
                 component.m_itemData.m_shared.m_weight = 10f;
                 component.m_itemData.m_shared.m_armor = 38;
+                component.m_itemData.m_shared.m_damageModifiers = new List<HitData.DamageModPair>()
+                {
+                    new HitData.DamageModPair()
+                    {
+                        m_type = HitData.DamageType.Slash, m_modifier = HitData.DamageModifier.Resistant
+                    }
+                };
             }
         }
 
